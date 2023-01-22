@@ -6,7 +6,8 @@ from flask import Flask, request, render_template
 
 from utils import get_posts_all, get_post_by_pk, get_comments_by_post_id, search_for_posts, get_posts_by_user
 
-logging.basicConfig(filename="api.log", level=logging.INFO, format='%(asctime)s [%(levelname)s] %(message)s')
+logging.basicConfig(filename="./logs/api.log", level=logging.INFO,
+                    encoding='utf-8', format='%(asctime)s [%(levelname)s] %(message)s')
 
 
 app = Flask(__name__)
@@ -29,7 +30,7 @@ app.register_error_handler(500, handle_bad_request)
 @app.route("/", methods=["GET"])
 def load_main_page():
     posts_all = get_posts_all()
-    return render_template("index.html", posts=posts_all, tag=tag)
+    return render_template("index.html", posts=posts_all)
 
 
 @app.route("/post/<int:post_id>", methods=["GET", "POST"])
@@ -56,7 +57,7 @@ def load_user(user_name):
 
 @app.route("/api/posts/", methods=["GET"])
 def list_posts_json():
-    logging.info(msg='Запрос /api/posts')
+    logging.info('Запрос /api/posts')
     with open("./data/posts.json", encoding="utf-8") as file:
         data = json.load(file)
         if type(data) == list:
@@ -67,7 +68,7 @@ def list_posts_json():
 
 @app.route("/api/posts/<int:post_id>", methods=["GET"])
 def load_post_json(post_id):
-    logging.info(msg=f'Запрос /api/posts/{post_id}')
+    logging.info(f'Запрос /api/posts/{post_id}')
     with open("./data/posts.json", encoding="utf-8") as file:
         data = json.load(file)
         for _post in data:
