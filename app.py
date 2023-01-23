@@ -79,4 +79,5 @@ def load_post_json(post_id):
                 return "Не удалось загрузить json файл"
 
 
-app.run()
+if __name__ == "__main__":
+    app.run()
