@@ -2,7 +2,7 @@ import json
 import logging
 import werkzeug.exceptions
 
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, jsonify
 
 from utils import get_posts_all, get_post_by_pk, get_comments_by_post_id, search_for_posts, get_posts_by_user
 
@@ -61,7 +61,7 @@ def list_posts_json():
     with open("./data/posts.json", encoding="utf-8") as file:
         data = json.load(file)
         if type(data) == list:
-            return json.dumps(data, ensure_ascii=False)
+            return jsonify(data)
         else:
             return "Неудалось загрузить json файл"
 
@@ -74,7 +74,7 @@ def load_post_json(post_id):
         for _post in data:
             if type(_post) == dict:
                 if _post["pk"] == post_id:
-                    return json.dumps(_post, ensure_ascii=False)
+                    return jsonify(_post)
             else:
                 return "Не удалось загрузить json файл"
 
